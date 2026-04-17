@@ -123,7 +123,7 @@ def take(n, iterable):
         [0, 1, 2]
 
     """
-    return list(islice(iterable, n))
+    pass
 
 
 def tabulate(function, start=0):
@@ -141,7 +141,7 @@ def tabulate(function, start=0):
         [9, 4, 1, 0]
 
     """
-    return map(function, count(start))
+    pass
 
 
 def tail(n, iterable):
@@ -152,12 +152,7 @@ def tail(n, iterable):
     ['E', 'F', 'G']
 
     """
-    try:
-        size = len(iterable)
-    except TypeError:
-        return iter(deque(iterable, maxlen=n))
-    else:
-        return islice(iterable, max(0, size - n), None)
+    pass
 
 
 def consume(iterator, n=None):
@@ -191,13 +186,7 @@ def consume(iterator, n=None):
         StopIteration
 
     """
-    # Use functions that consume iterators at C speed.
-    if n is None:
-        # feed the entire iterator into a zero-length deque
-        deque(iterator, maxlen=0)
-    else:
-        # advance to the empty slice starting at position n
-        next(islice(iterator, n, n), None)
+    pass
 
 
 def nth(iterable, n, default=None):
@@ -210,7 +199,7 @@ def nth(iterable, n, default=None):
     'zebra'
 
     """
-    return next(islice(iterable, n, None), default)
+    pass
 
 
 def all_equal(iterable, key=None):
@@ -231,12 +220,7 @@ def all_equal(iterable, key=None):
         True
 
     """
-    iterator = groupby(iterable, key)
-    for first in iterator:
-        for second in iterator:
-            return False
-        return True
-    return True
+    pass
 
 
 def quantify(iterable, pred=bool):
@@ -246,7 +230,7 @@ def quantify(iterable, pred=bool):
     2
 
     """
-    return sum(map(pred, iterable))
+    pass
 
 
 def pad_none(iterable):
@@ -260,7 +244,7 @@ def pad_none(iterable):
     See also :func:`padded`.
 
     """
-    return chain(iterable, repeat(None))
+    pass
 
 
 padnone = pad_none
@@ -273,7 +257,7 @@ def ncycles(iterable, n):
     ['a', 'b', 'a', 'b', 'a', 'b']
 
     """
-    return chain.from_iterable(repeat(tuple(iterable), n))
+    pass
 
 
 def dotproduct(vec1, vec2):
@@ -286,7 +270,7 @@ def dotproduct(vec1, vec2):
 
     In Python 3.12 and later, use ``math.sumprod()`` instead.
     """
-    return sum(map(mul, vec1, vec2))
+    pass
 
 
 # math.sumprod is available for Python 3.12+
@@ -305,7 +289,7 @@ def flatten(list_of_lists):
     See also :func:`collapse`, which can flatten multiple levels of nesting.
 
     """
-    return chain.from_iterable(list_of_lists)
+    pass
 
 
 def repeatfunc(function, times=None, *args):
@@ -330,9 +314,7 @@ def repeatfunc(function, times=None, *args):
         [2, 4, 8, 1, 8, 4]
 
     """
-    if times is None:
-        return starmap(function, repeat(args))
-    return starmap(function, repeat(args, times))
+    pass
 
 
 def pairwise(iterable):
@@ -344,7 +326,7 @@ def pairwise(iterable):
        This function is deprecated as of version 11.0.0. It will be removed in a future
        major release.
     """
-    return itertools_pairwise(iterable)
+    pass
 
 
 def grouper(iterable, n, incomplete='fill', fillvalue=None):
@@ -376,16 +358,7 @@ def grouper(iterable, n, incomplete='fill', fillvalue=None):
     ValueError
 
     """
-    iterators = [iter(iterable)] * n
-    match incomplete:
-        case 'fill':
-            return zip_longest(*iterators, fillvalue=fillvalue)
-        case 'strict':
-            return zip(*iterators, strict=True)
-        case 'ignore':
-            return zip(*iterators)
-        case _:
-            raise ValueError('Expected fill, strict, or ignore')
+    pass
 
 
 def roundrobin(*iterables):
@@ -399,11 +372,7 @@ def roundrobin(*iterables):
     iterables is small).
 
     """
-    # Algorithm credited to George Sakkis
-    iterators = map(iter, iterables)
-    for num_active in range(len(iterables), 0, -1):
-        iterators = cycle(islice(iterators, num_active))
-        yield from map(next, iterators)
+    pass
 
 
 def partition(pred, iterable):
@@ -426,24 +395,7 @@ def partition(pred, iterable):
         ([0, False, ''], [1, True, ' '])
 
     """
-    if pred is None:
-        pred = bool
-    iterator = iter(iterable)
-
-    false_queue = deque()
-    true_queue = deque()
-
-    def gen(queue):
-        while True:
-            while queue:
-                yield queue.popleft()
-            for value in iterator:
-                (true_queue if pred(value) else false_queue).append(value)
-                break
-            else:
-                return
-
-    return gen(false_queue), gen(true_queue)
+    pass
 
 
 def powerset(iterable):
@@ -463,8 +415,7 @@ def powerset(iterable):
     For a variant that efficiently yields actual :class:`set` instances, see
     :func:`powerset_of_sets`.
     """
-    s = list(iterable)
-    return chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
+    pass
 
 
 def unique_everseen(iterable, key=None):
@@ -490,17 +441,7 @@ def unique_everseen(iterable, key=None):
     is not required.
 
     """
-    seen = set()
-    if key is None:
-        for element in filterfalse(seen.__contains__, iterable):
-            seen.add(element)
-            yield element
-    else:
-        for element in iterable:
-            k = key(element)
-            if k not in seen:
-                seen.add(k)
-                yield element
+    pass
 
 
 def unique_justseen(iterable, key=None):
@@ -512,10 +453,7 @@ def unique_justseen(iterable, key=None):
     ['A', 'B', 'C', 'A', 'D']
 
     """
-    if key is None:
-        return map(itemgetter(0), groupby(iterable))
-
-    return map(next, map(itemgetter(1), groupby(iterable, key)))
+    pass
 
 
 def unique(iterable, key=None, reverse=False):
@@ -534,8 +472,7 @@ def unique(iterable, key=None, reverse=False):
     The elements in *iterable* need not be hashable, but they must be
     comparable for sorting to work.
     """
-    sequenced = sorted(iterable, key=key, reverse=reverse)
-    return unique_justseen(sequenced, key=key)
+    pass
 
 
 def iter_except(function, exception, first=None):
@@ -560,11 +497,7 @@ def iter_except(function, exception, first=None):
         []
 
     """
-    with suppress(exception):
-        if first is not None:
-            yield first()
-        while True:
-            yield function()
+    pass
 
 
 def first_true(iterable, default=None, pred=None):
@@ -584,7 +517,7 @@ def first_true(iterable, default=None, pred=None):
         'missing'
 
     """
-    return next(filter(pred, iterable), default)
+    pass
 
 
 def random_product(*iterables, repeat=1):
@@ -603,8 +536,7 @@ def random_product(*iterables, repeat=1):
     ``itertools.product(*args, repeat=repeat)``.
 
     """
-    pools = tuple(map(tuple, iterables)) * repeat
-    return tuple(map(choice, pools))
+    pass
 
 
 def random_permutation(iterable, r=None):
@@ -620,9 +552,7 @@ def random_permutation(iterable, r=None):
     ``itertools.permutations(iterable, r)``.
 
     """
-    pool = tuple(iterable)
-    r = len(pool) if r is None else r
-    return tuple(sample(pool, r))
+    pass
 
 
 def random_combination(iterable, r):
@@ -635,10 +565,7 @@ def random_combination(iterable, r):
     ``itertools.combinations(iterable, r)``.
 
     """
-    pool = tuple(iterable)
-    n = len(pool)
-    indices = sorted(sample(range(n), r))
-    return tuple([pool[i] for i in indices])
+    pass
 
 
 def random_combination_with_replacement(iterable, r):
@@ -652,10 +579,7 @@ def random_combination_with_replacement(iterable, r):
     ``itertools.combinations_with_replacement(iterable, r)``.
 
     """
-    pool = tuple(iterable)
-    n = len(pool)
-    indices = sorted(randrange(n) for i in range(r))
-    return tuple([pool[i] for i in indices])
+    pass
 
 
 def nth_combination(iterable, r, index):
@@ -672,24 +596,7 @@ def nth_combination(iterable, r, index):
     ``ValueError`` will be raised If *r* is negative.
     ``IndexError`` will be raised if the given *index* is invalid.
     """
-    pool = tuple(iterable)
-    n = len(pool)
-    c = comb(n, r)
-
-    if index < 0:
-        index += c
-    if not 0 <= index < c:
-        raise IndexError
-
-    result = []
-    while r:
-        c, n, r = c * r // n, n - 1, r - 1
-        while index >= c:
-            index -= c
-            c, n = c * (n - r) // n, n - 1
-        result.append(pool[-1 - n])
-
-    return tuple(result)
+    pass
 
 
 def prepend(value, iterable):
@@ -704,7 +611,7 @@ def prepend(value, iterable):
     or :func:`value_chain`.
 
     """
-    return chain([value], iterable)
+    pass
 
 
 def convolve(signal, kernel):
@@ -738,16 +645,7 @@ def convolve(signal, kernel):
     * Video by 3Blue1Brown:  https://www.youtube.com/watch?v=KuXjwB4LzSA
 
     """
-    # This implementation comes from an older version of the itertools
-    # documentation.  While the newer implementation is a bit clearer,
-    # this one was kept because the inlined window logic is faster
-    # and it avoids an unnecessary deque-to-tuple conversion.
-    kernel = tuple(kernel)[::-1]
-    n = len(kernel)
-    window = deque([0], maxlen=n) * n
-    for x in chain(signal, repeat(0, n - 1)):
-        window.append(x)
-        yield _sumprod(kernel, window)
+    pass
 
 
 def before_and_after(predicate, it):
@@ -764,9 +662,7 @@ def before_and_after(predicate, it):
     Note that the first iterator must be fully consumed before the second
     iterator can generate valid results.
     """
-    trues, after = tee(it)
-    trues = compress(takewhile(predicate, trues), zip(after))
-    return trues, after
+    pass
 
 
 def triplewise(iterable):
@@ -776,30 +672,17 @@ def triplewise(iterable):
     [('A', 'B', 'C'), ('B', 'C', 'D'), ('C', 'D', 'E')]
 
     """
-    # This deviates from the itertools documentation recipe - see
-    # https://github.com/more-itertools/more-itertools/issues/889
-    t1, t2, t3 = tee(iterable, 3)
-    next(t3, None)
-    next(t3, None)
-    next(t2, None)
-    return zip(t1, t2, t3)
+    pass
 
 
 def _sliding_window_islice(iterable, n):
     # Fast path for small, non-zero values of n.
-    iterators = tee(iterable, n)
-    for i, iterator in enumerate(iterators):
-        next(islice(iterator, i, i), None)
-    return zip(*iterators)
+    pass
 
 
 def _sliding_window_deque(iterable, n):
     # Normal path for other values of n.
-    iterator = iter(iterable)
-    window = deque(islice(iterator, n - 1), maxlen=n)
-    for x in iterator:
-        window.append(x)
-        yield tuple(window)
+    pass
 
 
 def sliding_window(iterable, n):
@@ -815,16 +698,7 @@ def sliding_window(iterable, n):
 
     For a variant with more features, see :func:`windowed`.
     """
-    if n > 20:
-        return _sliding_window_deque(iterable, n)
-    elif n > 2:
-        return _sliding_window_islice(iterable, n)
-    elif n == 2:
-        return pairwise(iterable)
-    elif n == 1:
-        return zip(iterable)
-    else:
-        raise ValueError(f'n should be at least one, not {n}')
+    pass
 
 
 def subslices(iterable):
@@ -836,9 +710,7 @@ def subslices(iterable):
     This is similar to :func:`substrings`, but emits items in a different
     order.
     """
-    seq = list(iterable)
-    slices = starmap(slice, combinations(range(len(seq) + 1), 2))
-    return map(getitem, repeat(seq), slices)
+    pass
 
 
 def polynomial_from_roots(roots):
@@ -852,15 +724,7 @@ def polynomial_from_roots(roots):
 
     Supports all numeric types: int, float, complex, Decimal, Fraction.
     """
-
-    # This recipe differs from the one in itertools docs in that it
-    # applies list() after each call to convolve().  This avoids
-    # hitting stack limits with nested generators.
-
-    poly = [1]
-    for root in roots:
-        poly = list(convolve(poly, (1, -root)))
-    return poly
+    pass
 
 
 def iter_index(iterable, value, start=0, stop=None):
@@ -936,20 +800,14 @@ def _batched(iterable, n, *, strict=False):  # pragma: no cover
 
     On Python 3.13 and above, this is an alias for :func:`itertools.batched`.
     """
-    if n < 1:
-        raise ValueError('n must be at least one')
-    iterator = iter(iterable)
-    while batch := tuple(islice(iterator, n)):
-        if strict and len(batch) != n:
-            raise ValueError('batched(): incomplete batch')
-        yield batch
+    pass
 
 
 if hexversion >= 0x30D00A2:  # pragma: no cover
     from itertools import batched as itertools_batched
 
     def batched(iterable, n, *, strict=False):
-        return itertools_batched(iterable, n, strict=strict)
+        pass
 
     batched.__doc__ = _batched.__doc__
 else:  # pragma: no cover
@@ -965,30 +823,17 @@ def transpose(matrix):
     The caller should ensure that the dimensions of the input are compatible.
     If the input is empty, no output will be produced.
     """
-    return zip(*matrix, strict=True)
+    pass
 
 
 def _is_scalar(value, stringlike=(str, bytes)):
     "Scalars are bytes, strings, and non-iterables."
-    try:
-        iter(value)
-    except TypeError:
-        return True
-    return isinstance(value, stringlike)
+    pass
 
 
 def _flatten_tensor(tensor):
     "Depth-first iterator over scalars in a tensor."
-    iterator = iter(tensor)
-    while True:
-        try:
-            value = next(iterator)
-        except StopIteration:
-            return iterator
-        iterator = chain((value,), iterator)
-        if _is_scalar(value):
-            return iterator
-        iterator = chain.from_iterable(iterator)
+    pass
 
 
 def reshape(matrix, shape):
@@ -1024,12 +869,7 @@ def reshape(matrix, shape):
     or when the input is exhausted, whichever comes first.
 
     """
-    if isinstance(shape, int):
-        return batched(chain.from_iterable(matrix), shape)
-    first_dim, *dims = shape
-    scalar_stream = _flatten_tensor(matrix)
-    reshaped = reduce(batched, reversed(dims), scalar_stream)
-    return islice(reshaped, first_dim)
+    pass
 
 
 def matmul(m1, m2):
@@ -1043,24 +883,13 @@ def matmul(m1, m2):
 
     Supports all numeric types: int, float, complex, Decimal, Fraction.
     """
-    n = len(m2[0])
-    return batched(starmap(_sumprod, product(m1, transpose(m2))), n)
+    pass
 
 
 def _factor_pollard(n):
     # Return a factor of n using Pollard's rho algorithm.
     # Efficient when n is odd and composite.
-    for b in range(1, n):
-        x = y = 2
-        d = 1
-        while d == 1:
-            x = (x * x + b) % n
-            y = (y * y + b) % n
-            y = (y * y + b) % n
-            d = gcd(x - y, n)
-        if d != n:
-            return d
-    raise ValueError('prime or under 5')  # pragma: no cover
+    pass
 
 
 _primes_below_211 = tuple(sieve(211))
@@ -1076,27 +905,7 @@ def factor(n):
     either verified as prime with ``is_prime`` or split into
     smaller factors with Pollard's rho algorithm.
     """
-
-    # Corner case reduction
-    if n < 2:
-        return
-
-    # Trial division reduction
-    for prime in _primes_below_211:
-        while not n % prime:
-            yield prime
-            n //= prime
-
-    # Pollard's rho reduction
-    primes = []
-    todo = [n] if n > 1 else []
-    for n in todo:
-        if n < 211**2 or is_prime(n):
-            primes.append(n)
-        else:
-            fact = _factor_pollard(n)
-            todo += (fact, n // fact)
-    yield from sorted(primes)
+    pass
 
 
 def polynomial_eval(coefficients, x):
@@ -1115,11 +924,7 @@ def polynomial_eval(coefficients, x):
 
     Supports all numeric types: int, float, complex, Decimal, Fraction.
     """
-    n = len(coefficients)
-    if n == 0:
-        return type(x)(0)
-    powers = map(pow, repeat(x), reversed(range(n)))
-    return _sumprod(coefficients, powers)
+    pass
 
 
 def sum_of_squares(iterable):
@@ -1130,7 +935,7 @@ def sum_of_squares(iterable):
 
     Supports all numeric types: int, float, complex, Decimal, Fraction.
     """
-    return _sumprod(*tee(iterable))
+    pass
 
 
 def polynomial_derivative(coefficients):
@@ -1147,9 +952,7 @@ def polynomial_derivative(coefficients):
 
     Supports all numeric types: int, float, complex, Decimal, Fraction.
     """
-    n = len(coefficients)
-    powers = reversed(range(1, n))
-    return list(map(mul, coefficients, powers))
+    pass
 
 
 def totient(n):
@@ -1171,9 +974,7 @@ def totient(n):
     Reference:  https://en.wikipedia.org/wiki/Euler%27s_totient_function
 
     """
-    for prime in set(factor(n)):
-        n -= n // prime
-    return n
+    pass
 
 
 # Miller–Rabin primality test: https://oeis.org/A014233
@@ -1195,27 +996,11 @@ _perfect_tests = [
 @lru_cache
 def _shift_to_odd(n):
     'Return s, d such that 2**s * d == n'
-    s = ((n - 1) ^ n).bit_length() - 1
-    d = n >> s
-    assert (1 << s) * d == n and d & 1 and s >= 0
-    return s, d
+    pass
 
 
 def _strong_probable_prime(n, base):
-    assert (n > 2) and (n & 1) and (2 <= base < n)
-
-    s, d = _shift_to_odd(n - 1)
-
-    x = pow(base, d, n)
-    if x == 1 or x == n - 1:
-        return True
-
-    for _ in range(s - 1):
-        x = x * x % n
-        if x == n - 1:
-            return True
-
-    return False
+    pass
 
 
 # Separate instance of Random() that doesn't share state
@@ -1255,20 +1040,7 @@ def is_prime(n):
     the probabilistic Miller-Rabin primality test has a less than 1 in 2**128
     chance of a false positive.
     """
-
-    if n < 17:
-        return n in {2, 3, 5, 7, 11, 13}
-
-    if not (n & 1 and n % 3 and n % 5 and n % 7 and n % 11 and n % 13):
-        return False
-
-    for limit, bases in _perfect_tests:
-        if n < limit:
-            break
-    else:
-        bases = (_private_randrange(2, n - 1) for i in range(64))
-
-    return all(_strong_probable_prime(n, base) for base in bases)
+    pass
 
 
 def loops(n):
@@ -1282,7 +1054,7 @@ def loops(n):
     5
 
     """
-    return repeat(None, n)
+    pass
 
 
 def multinomial(*counts):
@@ -1327,58 +1099,22 @@ def multinomial(*counts):
     Reference:  https://en.wikipedia.org/wiki/Multinomial_theorem
 
     """
-    return prod(map(comb, accumulate(counts), counts))
+    pass
 
 
 def _running_median_minheap_and_maxheap(iterator):  # pragma: no cover
     "Non-windowed running_median() for Python 3.14+"
-
-    read = iterator.__next__
-    lo = []  # max-heap
-    hi = []  # min-heap (same size as or one smaller than lo)
-
-    with suppress(StopIteration):
-        while True:
-            heappush_max(lo, heappushpop(hi, read()))
-            yield lo[0]
-
-            heappush(hi, heappushpop_max(lo, read()))
-            yield (lo[0] + hi[0]) / 2
+    pass
 
 
 def _running_median_minheap_only(iterator):  # pragma: no cover
     "Backport of non-windowed running_median() for Python 3.13 and prior."
-
-    read = iterator.__next__
-    lo = []  # max-heap (actually a minheap with negated values)
-    hi = []  # min-heap (same size as or one smaller than lo)
-
-    with suppress(StopIteration):
-        while True:
-            heappush(lo, -heappushpop(hi, read()))
-            yield -lo[0]
-
-            heappush(hi, -heappushpop(lo, -read()))
-            yield (hi[0] - lo[0]) / 2
+    pass
 
 
 def _running_median_windowed(iterator, maxlen):
     "Yield median of values in a sliding window."
-
-    window = deque()
-    ordered = []
-
-    for x in iterator:
-        window.append(x)
-        insort(ordered, x)
-
-        if len(ordered) > maxlen:
-            i = bisect_left(ordered, window.popleft())
-            del ordered[i]
-
-        n = len(ordered)
-        m = n // 2
-        yield ordered[m] if n & 1 else (ordered[m - 1] + ordered[m]) / 2
+    pass
 
 
 def running_median(iterable, *, maxlen=None):
@@ -1403,30 +1139,11 @@ def running_median(iterable, *, maxlen=None):
     rounding, making the results slightly different than that obtained
     by statistics.median().
     """
-
-    iterator = iter(iterable)
-
-    if maxlen is not None:
-        maxlen = _index(maxlen)
-        if maxlen <= 0:
-            raise ValueError('Window size should be positive')
-        return _running_median_windowed(iterator, maxlen)
-
-    if not _max_heap_available:
-        return _running_median_minheap_only(iterator)  # pragma: no cover
-
-    return _running_median_minheap_and_maxheap(iterator)  # pragma: no cover
+    pass
 
 
 def _windowed_running_mean(iterator, n):
-    window = deque()
-    running_sum = 0
-    for value in iterator:
-        window.append(value)
-        running_sum += value
-        if len(window) > n:
-            running_sum -= window.popleft()
-        yield running_sum / len(window)
+    pass
 
 
 def running_mean(iterable, *, maxlen=None):
@@ -1450,27 +1167,11 @@ def running_mean(iterable, *, maxlen=None):
     So the results may be slightly different from `statistics.mean`.
 
     """
-
-    iterator = iter(iterable)
-
-    if maxlen is None:
-        return map(truediv, accumulate(iterator), count(1))
-
-    if maxlen <= 0:
-        raise ValueError('Window size should be positive')
-
-    return _windowed_running_mean(iterator, maxlen)
+    pass
 
 
 def _windowed_running_min(iterator, maxlen):
-    sis = deque()  # Strictly increasing subsequence
-    for index, value in enumerate(iterator):
-        if sis and sis[0][0] == index - maxlen:
-            sis.popleft()
-        while sis and not sis[-1][1] < value:  # Remove non-increasing values
-            sis.pop()
-        sis.append((index, value))  # Most recent value at position -1
-        yield sis[0][1]  # Window minimum at position 0
+    pass
 
 
 def running_min(iterable, *, maxlen=None):
@@ -1491,27 +1192,11 @@ def running_min(iterable, *, maxlen=None):
     Supports numeric types such as int, float, Decimal, and Fraction,
     but not complex numbers which are unorderable.
     """
-
-    iterator = iter(iterable)
-
-    if maxlen is None:
-        return accumulate(iterator, func=min)
-
-    if maxlen <= 0:
-        raise ValueError('Window size should be positive')
-
-    return _windowed_running_min(iterator, maxlen)
+    pass
 
 
 def _windowed_running_max(iterator, maxlen):
-    sds = deque()  # Strictly decreasing subsequence
-    for index, value in enumerate(iterator):
-        if sds and sds[0][0] == index - maxlen:
-            sds.popleft()
-        while sds and not sds[-1][1] > value:  # Remove non-decreasing values
-            sds.pop()
-        sds.append((index, value))  # Most recent value at position -1
-        yield sds[0][1]  # Window maximum at position 0
+    pass
 
 
 def running_max(iterable, *, maxlen=None):
@@ -1532,16 +1217,7 @@ def running_max(iterable, *, maxlen=None):
     Supports numeric types such as int, float, Decimal, and Fraction,
     but not complex numbers which are unorderable.
     """
-
-    iterator = iter(iterable)
-
-    if maxlen is None:
-        return accumulate(iterator, func=max)
-
-    if maxlen <= 0:
-        raise ValueError('Window size should be positive')
-
-    return _windowed_running_max(iterator, maxlen)
+    pass
 
 
 @dataclass(frozen=True, slots=True)
@@ -1566,17 +1242,7 @@ def running_statistics(iterable, *, maxlen=None):
     Supports numeric types such as int, float, Decimal, and Fraction,
     but not complex numbers which are unorderable.
     """
-
-    # fmt: off
-    t0, t1, t2, t3 = tee(iterable, 4)
-    return map(
-        Stats,
-        count(1) if maxlen is None else chain(range(1, maxlen), repeat(maxlen)),
-        running_min(t0, maxlen=maxlen),
-        running_median(t1, maxlen=maxlen),
-        running_max(t2, maxlen=maxlen),
-        running_mean(t3, maxlen=maxlen),
-    )
+    pass
     # fmt: on
 
 
@@ -1586,14 +1252,4 @@ def random_derangement(iterable):
     Equivalent to but much faster than ``choice(list(derangements(iterable)))``.
 
     """
-    seq = tuple(iterable)
-    if len(seq) < 2:
-        if len(seq) == 0:
-            return ()
-        raise IndexError('No derangments to choose from')
-    perm = list(range(len(seq)))
-    start = tuple(perm)
-    while True:
-        shuffle(perm)
-        if not any(map(is_, start, perm)):
-            return itemgetter(*perm)(seq)
+    pass
